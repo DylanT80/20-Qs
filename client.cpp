@@ -55,7 +55,6 @@ public:
         if (write(clientSd, username, sizeof(username)) < 0) {
             std::cerr << "Registration unsuccessful" << std::endl;
         }
-        showLobbies();
     }
     
     // Unregister user
@@ -74,7 +73,7 @@ public:
         if (read(clientSd, lobbies, sizeof(lobbies)) < 0) {
             std::cerr << "Lobby joining unsuccessful" << std::endl;
         }
-        cout << "\n\n\n" << lobbies << endl;
+        cout << "\n" << lobbies << endl;
     }
     
     // Join a lobby

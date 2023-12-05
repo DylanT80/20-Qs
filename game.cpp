@@ -1,10 +1,12 @@
 #include "client.cpp"
+#include "gameServer.cpp"
 #include <iostream>
 #include <stdlib.h>
 
 using namespace std;
 
-enum GameState { inLobby, inGame };
+enum GameState { inLobby, waitingLobby, inGame };
+GameServer gameServer;
 
 int main() {
     cout << "----======== Welcome to 20 Q's ========----" << endl;
@@ -14,6 +16,7 @@ int main() {
     cout << "Enter a username: ";
     char name[8];
     cin >> name;
+    cout << "Welcome " << name << "!" << endl;
 
     cl.connectTCP();
     cl.registerUser(name);
@@ -21,23 +24,28 @@ int main() {
     bool quit = false;
     GameState gs = inLobby; // Initially in lobby
 
-    // While in game
+    // While in the game and in a certain game state
     while (!quit) {
         // In the lobby
         if (gs == inLobby) {
+            // Show lobby
             cl.showLobbies();
-          
+
+            // Options
             cout << "Create a lobby by entering a name / Enter lobby number to join / Q (quit):" << endl;
             char lobbyName[32];
             cin >> lobbyName;
-                
+            
+            // Determine if in game or not
             bool joined = cl.joinLobby(lobbyName);
-            if (joined) {
+            if (string(lobbyName) != "L" && joined) {   // Not in game if refresh lobby or failed to join
                 gs = inGame;
             }
         }
+
         // In the game
         else if (gs == inGame) {
+            // Send and receive messages
             cout << "Enter message:" << endl;
             char msg[1024];
             cin >> msg;
