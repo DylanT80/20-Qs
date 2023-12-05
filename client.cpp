@@ -106,7 +106,7 @@ public:
         serverPort = 1000;              // Port # for P2P
         cout << p2pIP << endl;
         
-        sendSockAddr.sin_addr.s_addr = inet_addr(p2pIP);
+        inet_aton(p2pIP, &sendSockAddr.sin_addr);
         sendSockAddr.sin_port = htons(serverPort);
 
         int connectStatus = connect(clientSd, (sockaddr*) &sendSockAddr, sizeof(sendSockAddr));

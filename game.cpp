@@ -47,7 +47,6 @@ int main() {
 
         // Waiting in lobby
         else if (gs == waitingLobby) {
-            cout << "Waiting for other player..." << endl;
             gameServer.waitInLobby();
         }
 
