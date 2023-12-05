@@ -5,7 +5,7 @@
 
 using namespace std;
 
-enum GameState { inLobby, waitingLobby, inGame };
+enum GameState { inLobby, waitingLobby, joinLobby, inGame };
 GameServer gameServer;
 
 int main() {
@@ -18,7 +18,7 @@ int main() {
     cin >> name;
     cout << "Welcome " << name << "!" << endl;
 
-    cl.connectTCP();
+    cl.connectToServer();
     cl.registerUser(name);
 
     bool quit = false;
@@ -36,10 +36,32 @@ int main() {
             char lobbyName[32];
             cin >> lobbyName;
             
+            if (string(lobbyName) == "L") {   // Not in game if refresh lobby
+                continue;
+            }
+
             // Determine if in game or not
             bool joined = cl.joinLobby(lobbyName);
-            if (string(lobbyName) != "L" && joined) {   // Not in game if refresh lobby or failed to join
+            joined ? gs = joinLobby : gs = waitingLobby;
+        }
+
+        // Waiting in lobby
+        else if (gs == waitingLobby) {
+            cout << "Waiting for other player..." << endl;
+            gameServer.waitInLobby();
+        }
+
+        // Joining a lobby
+        else if (gs == joinLobby) {
+            cout << "Joining Lobby..." << endl;
+            bool connected = cl.connectToGameServer();
+            if (connected) {
+                cout << "Connected!" << endl;
                 gs = inGame;
+            } 
+            else {
+                cout << "Joining lobby failed" << endl;
+                gs = inLobby;
             }
         }
 
