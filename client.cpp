@@ -24,6 +24,7 @@ private:
     char* p2pIP;
     sockaddr_in sendSockAddr;           // SockAddr
     int clientSd;                       // Client socket descriptor
+    int peerSd;
 
 public:
     Client() {
@@ -102,35 +103,8 @@ public:
         return false;
     }
 
-    bool connectToGameServer() {
-        serverPort = 1000;              // Port # for P2P
-        cout << p2pIP << endl;
-        
-        inet_aton(p2pIP, &sendSockAddr.sin_addr);
-        sendSockAddr.sin_port = htons(serverPort);
-
-        int connectStatus = connect(clientSd, (sockaddr*) &sendSockAddr, sizeof(sendSockAddr));
-        if (connectStatus < 0) {
-            cerr << "Failed to connect to the peer server" << endl;
-            return false;
-        }
-        return true;
-    }
-
-    // Send messages in game
-    void sendMessage(char* msg) {
-        if (write(clientSd, msg, sizeof(msg)) < 0) {
-            std::cerr << "Sending message unsuccessful" << std::endl;
-        }
-    }
-
-    // Send messages in game
-    void recvMessage() {
-        char msg[1024];
-        if (read(clientSd, msg, sizeof(msg)) < 0) {
-            std::cerr << "Receiving message unsuccessful" << std::endl;
-        }
-        cout << msg << endl;
+    char* getPeerIP() {
+        return p2pIP;
     }
 };
 #endif

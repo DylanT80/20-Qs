@@ -42,24 +42,29 @@ int main() {
 
             // Determine if in game or not
             bool joined = cl.joinLobby(lobbyName);
-            joined ? gs = joinLobby : gs = waitingLobby;
+            if (joined) {
+                gameServer.setp2pIP(cl.getPeerIP());    // Set peer IP
+                gs = joinLobby;
+            }
+            else {
+                gs = waitingLobby;
+            }
         }
 
         // Waiting in lobby
         else if (gs == waitingLobby) {
             gameServer.waitInLobby();
+            gs = inGame;
         }
 
         // Joining a lobby
         else if (gs == joinLobby) {
-            cout << "Joining Lobby..." << endl;
-            bool connected = cl.connectToGameServer();
+            bool connected = gameServer.connectToLobby();
             if (connected) {
-                cout << "Connected!" << endl;
                 gs = inGame;
             } 
             else {
-                cout << "Joining lobby failed" << endl;
+                cout << "Returning back to lobbies..." << endl;
                 gs = inLobby;
             }
         }
@@ -67,12 +72,12 @@ int main() {
         // In the game
         else if (gs == inGame) {
             // Send and receive messages
-            cout << "Enter message:" << endl;
+            cout << "Enter message: ";
             char msg[1024];
             cin >> msg;
 
-            cl.sendMessage(msg);
-            cl.recvMessage();
+            gameServer.sendMessage(msg);
+            gameServer.recvMessage();
         }
     }
 }
