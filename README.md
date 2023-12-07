@@ -41,7 +41,7 @@ Available Lobbies:
 [3] ...
 
 Create a lobby by entering a name / Enter lobby number to join / Q (quit):
-> 2
+> JOIN NOW
 ```
 ### Exit a Game ###
 ```
@@ -61,3 +61,11 @@ Available Lobbies:
 Create a lobby by entering a name / Enter lobby number to join / Q (quit):
 > Q
 ```
+
+## TODO's ##
+
+| File(s)   |      What      |
+|----------|:-------------:
+| game.cpp, gameServer.cpp |  bug - sendMessage() called twice | 
+| game.cpp, gameServer.cpp |  complete game logic | 
+| server.cpp, gameServer.cpp, client.cpp |    unregsister(), handle user infos   |
