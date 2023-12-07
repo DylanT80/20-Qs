@@ -51,7 +51,8 @@ public:
         if (peerSd < 0) {
             cerr << "Starting lobby unsuccessful" << endl;
         }
-        cout << "YAY" << endl;
+        cout << "Player found!" << endl;
+        cout << "\n=================\n" << endl;
     }
 
     // Connect to peer's lobby
@@ -70,6 +71,7 @@ public:
             return false;
         }
         cout << "Connected!" << endl;
+        cout << "\n=================\n" << endl;
         return true;
     }
 
@@ -79,7 +81,18 @@ public:
     }
 
     // Send messages in game
-    void sendMessage(char* msg) {
+    // BUG - this is called twice?
+    void sendMessage() {
+        // Send and receive messages
+        cout << "Enter message: ";
+        string input;
+        getline(cin, input);
+        char msg[2048];
+        bzero(&msg, sizeof(msg));
+        for (int i = 0; i < input.size(); i++) {
+            msg[i] = input[i];
+        }
+
         if (write(peerSd, msg, sizeof(msg)) < 0) {
             std::cerr << "Sending message unsuccessful" << std::endl;
         }
@@ -87,7 +100,7 @@ public:
 
     // Recieve messages in game
     void recvMessage() {
-        char msg[1024];
+        char msg[2048];
         if (read(peerSd, msg, sizeof(msg)) < 0) {
             std::cerr << "Receiving message unsuccessful" << std::endl;
         }

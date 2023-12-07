@@ -14,7 +14,7 @@ int main() {
 
     // Register the user
     cout << "Enter a username: ";
-    char name[8];
+    char name[16];
     cin >> name;
     cout << "Welcome " << name << "!" << endl;
 
@@ -71,12 +71,7 @@ int main() {
 
         // In the game
         else if (gs == inGame) {
-            // Send and receive messages
-            cout << "Enter message: ";
-            char msg[1024];
-            cin >> msg;
-
-            gameServer.sendMessage(msg);
+            gameServer.sendMessage();
             gameServer.recvMessage();
         }
     }
