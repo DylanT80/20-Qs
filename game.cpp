@@ -5,7 +5,7 @@
 
 using namespace std;
 
-enum GameState { inLobby, waitingLobby, joinLobby, inGame };
+enum GameState { inLobby, waitingLobby, joinLobby, inGame, gameDone };
 GameServer gameServer;
 
 int main() {
@@ -17,6 +17,8 @@ int main() {
     char name[16];
     cin >> name;
     cout << "Welcome " << name << "!" << endl;
+    cin.clear();
+    cin.ignore(10000, '\n');        
 
     cl.connectToServer();
     cl.registerUser(name);
@@ -32,14 +34,24 @@ int main() {
             cl.showLobbies();
 
             // Options
-            cout << "Create a lobby by entering a name / Enter lobby number to join / Q (quit):" << endl;
-            char lobbyName[32];
-            cin >> lobbyName;
-            
-            if (string(lobbyName) == "L") {   // Not in game if refresh lobby
+            cout << "Create a lobby by entering a name / Enter lobby name to join that lobby / Q (quit):" << endl;
+            string input;
+            getline(cin, input);
+
+            if (input == "L") {         // Not in game if refresh lobby
+                continue;
+            }
+            else if (input == "Q") {    // Unregister
+                quit = true;
                 continue;
             }
 
+            char lobbyName[64];
+            bzero(&lobbyName, sizeof(lobbyName));
+            for (int i = 0; i < input.size(); i++) {
+                lobbyName[i] = input[i];
+            }
+            
             // Determine if in game or not
             bool joined = cl.joinLobby(lobbyName);
             if (joined) {
@@ -71,8 +83,27 @@ int main() {
 
         // In the game
         else if (gs == inGame) {
-            gameServer.sendMessage();
-            gameServer.recvMessage();
+            if (gameServer.getNumQuestions() == 1) {
+                cout << "\n--== 20 Questions asked! ==--\n";
+                gs = gameDone;
+            }
+            else if (gameServer.isHost()) {
+                if (gameServer.recvMessage() || gameServer.sendMessage()) {
+                    gs = gameDone;
+                }
+            }
+            else {
+                if (gameServer.sendMessage() || gameServer.recvMessage()) {
+                    gs = gameDone;
+                }
+            }
+        }
+
+        else if (gs == gameDone) {
+            cout << "The answer was...: " << gameServer.getAnswer() << "!\n\n\n";
+            cout << "game done :)\nReturning to menu...\n";
+            cl.reconnect();
+            gs = inLobby;
         }
     }
 }
