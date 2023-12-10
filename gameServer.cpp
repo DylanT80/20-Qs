@@ -16,7 +16,7 @@ using namespace std;
 class GameServer {
 
 private:
-    int server_port = 987;
+    int server_port;
     sockaddr_in acceptSockAddr;
     int serverSd;
     // Accept the connection as a new socket
@@ -28,16 +28,27 @@ private:
     int peerSd;
 
     string answer;
-    int questions = 0;
-    bool host = false;
+    int questions;
+    bool host;
 
 public:
     GameServer() {
+        server_port = 987;
+        questions = 0;
+        host = false;
+        
         bzero(&acceptSockAddr, sizeof(acceptSockAddr));     // zero out the data structure
         acceptSockAddr.sin_family = AF_INET;                        // using IP
         acceptSockAddr.sin_addr.s_addr = htonl(INADDR_ANY);         // listen on any address this computer has
         acceptSockAddr.sin_port = htons(server_port);               // set the port to listen on
+    }
+    
+    ~GameServer() {
+        close(serverSd);
+        close(peerSd);
+    }
 
+    void waitInLobby() {
         serverSd = socket(AF_INET, SOCK_STREAM, 0);             // creates a new socket for IP using TCP
 
         // Bind the socket
@@ -46,9 +57,7 @@ public:
         // Listen on the socket
         int n = 10;
         listen(serverSd, n);  // listen on the socket and allow up to n connections to wait.
-    }
-    
-    void waitInLobby() {
+
         host = true;
         cout << "Waiting for other player..." << endl;
         
@@ -80,7 +89,10 @@ public:
         cout << "Joining Lobby..." << endl;
 
         bzero(&peerSockAddr, sizeof(peerSockAddr));
-        peerSockAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+        cout << p2pIp << endl;
+
+        peerSockAddr.sin_family = AF_INET;  
+        peerSockAddr.sin_addr.s_addr = inet_addr(inet_ntoa(*(struct in_addr*)* gethostbyname(p2pIp)->h_addr_list));
         peerSockAddr.sin_port = htons(server_port);
 
         peerSd = socket(AF_INET, SOCK_STREAM, 0);
@@ -171,9 +183,5 @@ public:
 
     string getAnswer() {
         return answer;
-    }
-
-    void closeGame() {
-        close(peerSd);
     }
 };

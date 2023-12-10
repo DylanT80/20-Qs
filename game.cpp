@@ -6,7 +6,7 @@
 using namespace std;
 
 enum GameState { inLobby, waitingLobby, joinLobby, inGame, gameDone };
-GameServer gameServer;
+GameServer* gameServer;
 
 int main() {
     cout << "----======== Welcome to 20 Q's ========----" << endl;
@@ -53,9 +53,10 @@ int main() {
             }
             
             // Determine if in game or not
+            gameServer = new GameServer();
             bool joined = cl.joinLobby(lobbyName);
             if (joined) {
-                gameServer.setp2pIP(cl.getPeerIP());    // Set peer IP
+                gameServer->setp2pIP(cl.getPeerIP());    // Set peer IP
                 gs = joinLobby;
             }
             else {
@@ -65,13 +66,13 @@ int main() {
 
         // Waiting in lobby
         else if (gs == waitingLobby) {
-            gameServer.waitInLobby();
+            gameServer->waitInLobby();
             gs = inGame;
         }
 
         // Joining a lobby
         else if (gs == joinLobby) {
-            bool connected = gameServer.connectToLobby();
+            bool connected = gameServer->connectToLobby();
             if (connected) {
                 gs = inGame;
             } 
@@ -83,25 +84,26 @@ int main() {
 
         // In the game
         else if (gs == inGame) {
-            if (gameServer.getNumQuestions() == 1) {
+            if (gameServer->getNumQuestions() == 1) {
                 cout << "\n--== 20 Questions asked! ==--\n";
                 gs = gameDone;
             }
-            else if (gameServer.isHost()) {
-                if (gameServer.recvMessage() || gameServer.sendMessage()) {
+            else if (gameServer->isHost()) {
+                if (gameServer->recvMessage() || gameServer->sendMessage()) {
                     gs = gameDone;
                 }
             }
             else {
-                if (gameServer.sendMessage() || gameServer.recvMessage()) {
+                if (gameServer->sendMessage() || gameServer->recvMessage()) {
                     gs = gameDone;
                 }
             }
         }
 
         else if (gs == gameDone) {
-            cout << "The answer was...: " << gameServer.getAnswer() << "!\n\n\n";
+            cout << "The answer was...: " << gameServer->getAnswer() << "!\n\n\n";
             cout << "game done :)\nReturning to menu...\n";
+            delete gameServer;
             cl.reconnect();
             gs = inLobby;
         }
