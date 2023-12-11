@@ -64,3 +64,5 @@ Create a lobby by entering a name / Enter lobby number to join / Q (quit):
 
 ### A couple notes ###
 Used 127.0.0.1 for local play only. Remote play doesn't seem to be working, and therefore the commented out code in the game.cpp is present. Instead it breaks ending the whole process.
+
+There are 2 sh scripts. 1 is for client, 1 is for server. Be sure to run the server script and cpp file outside of a different directory so main functions don't interfere.
