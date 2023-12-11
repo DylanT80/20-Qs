@@ -76,7 +76,7 @@ Send question:
 > Is it yellow?
 ```
 
-## End of game ## 
+### End of game ## #
 ```
 The answer was pink!
 game done
