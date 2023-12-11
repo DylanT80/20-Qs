@@ -83,7 +83,7 @@ game done
 Disconnecting...
 ```
 
-### Unregister ###
+### Unregister / Exit ###
 Unregister by pressing Q at the lobby menu
 ```
 Available Lobbies:
