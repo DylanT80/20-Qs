@@ -78,7 +78,7 @@ Send question:
 
 ## End of game ## 
 ```
-The answer was __pink__!
+The answer was pink!
 game done
 Disconnecting...
 ```
