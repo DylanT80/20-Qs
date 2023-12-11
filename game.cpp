@@ -34,7 +34,7 @@ int main() {
             cl.showLobbies();
 
             // Options
-            cout << "Create a lobby by entering a name / Enter lobby name to join that lobby / Q (quit):" << endl;
+            cout << "Create a lobby by entering a name / Enter lobby name to join / L (Refresh lobbies) / Q (quit):" << endl;
             string input;
             getline(cin, input);
 
