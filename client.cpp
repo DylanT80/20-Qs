@@ -39,6 +39,8 @@ public:
 
     ~Client() {
         delete[] p2pIP;
+        delete[] hostName;
+        delete host;
     }
 
     // Connect to server
@@ -63,11 +65,6 @@ public:
         if (write(clientSd, username, sizeof(username)) < 0) {
             std::cerr << "Registration unsuccessful" << std::endl;
         }
-    }
-    
-    // Unregister user
-    void unregisterUser() {
-        close(clientSd);
     }
 
     // Show the available lobbies
@@ -105,6 +102,15 @@ public:
 
     char* getPeerIP() {
         return p2pIP;
+    }
+
+    // Reconnect with the main server
+    void reconnect() {
+        char status[2];
+        status[0] = 'D';
+        if (write(clientSd, status, sizeof(status)) < 0) {
+            std::cerr << "Reconnection unsuccessful" << std::endl;
+        }
     }
 };
 #endif

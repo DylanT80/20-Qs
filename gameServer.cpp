@@ -16,7 +16,7 @@ using namespace std;
 class GameServer {
 
 private:
-    int server_port = 987;
+    int server_port;
     sockaddr_in acceptSockAddr;
     int serverSd;
     // Accept the connection as a new socket
@@ -27,24 +27,38 @@ private:
     sockaddr_in peerSockAddr;
     int peerSd;
 
+    string answer;
+    int questions;
+    bool host;
+
 public:
     GameServer() {
+        server_port = 987;
+        questions = 0;
+        host = false;
+        
         bzero(&acceptSockAddr, sizeof(acceptSockAddr));     // zero out the data structure
         acceptSockAddr.sin_family = AF_INET;                        // using IP
         acceptSockAddr.sin_addr.s_addr = htonl(INADDR_ANY);         // listen on any address this computer has
         acceptSockAddr.sin_port = htons(server_port);               // set the port to listen on
+    }
+    
+    ~GameServer() {
+        close(serverSd);
+        close(peerSd);
+    }
 
+    void waitInLobby() {
         serverSd = socket(AF_INET, SOCK_STREAM, 0);             // creates a new socket for IP using TCP
 
         // Bind the socket
         bind(serverSd, (sockaddr*) &acceptSockAddr, sizeof(acceptSockAddr));  // bind the socket using the parameters we set earlier
         
         // Listen on the socket
-        int n = 1;
+        int n = 10;
         listen(serverSd, n);  // listen on the socket and allow up to n connections to wait.
-    }
-    
-    void waitInLobby() {
+
+        host = true;
         cout << "Waiting for other player..." << endl;
         
         peerSd = accept(serverSd, (sockaddr *)&newsock, &newsockSize);  // grabs the new connection and assigns it a temporary socket
@@ -53,6 +67,21 @@ public:
         }
         cout << "Player found!" << endl;
         cout << "\n=================\n" << endl;
+
+        cout << "Enter subject/idea for an answer: ";
+        string answer;
+        getline(cin, answer);
+        this->answer = answer;
+
+        char msg[2048];
+        bzero(&msg, sizeof(msg));
+        for (int i = 0; i < answer.size(); i++) {
+            msg[i] = answer[i];
+        }
+
+        if (write(peerSd, msg, sizeof(msg)) < 0) {
+            std::cerr << "Sending answer unsuccessful" << std::endl;
+        }
     }
 
     // Connect to peer's lobby
@@ -60,7 +89,10 @@ public:
         cout << "Joining Lobby..." << endl;
 
         bzero(&peerSockAddr, sizeof(peerSockAddr));
-        peerSockAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+        cout << p2pIp << endl;
+
+        peerSockAddr.sin_family = AF_INET;  
+        peerSockAddr.sin_addr.s_addr = inet_addr(inet_ntoa(*(struct in_addr*)* gethostbyname(p2pIp)->h_addr_list));
         peerSockAddr.sin_port = htons(server_port);
 
         peerSd = socket(AF_INET, SOCK_STREAM, 0);
@@ -72,6 +104,16 @@ public:
         }
         cout << "Connected!" << endl;
         cout << "\n=================\n" << endl;
+        
+        // Get answer
+        cout << "Host is choosing answer..." << endl;
+
+        char msg[2048];
+        if (read(peerSd, msg, sizeof(msg)) < 0) {
+            std::cerr << "Receiving answer unsuccessful" << std::endl;
+        }
+        answer = string(msg);
+
         return true;
     }
 
@@ -81,10 +123,15 @@ public:
     }
 
     // Send messages in game
-    // BUG - this is called twice?
-    void sendMessage() {
+    bool sendMessage() {
         // Send and receive messages
-        cout << "Enter message: ";
+        if (host) {
+            cout << "Send response to other player (Y = they got it!): ";
+        }
+        else {
+            questions++;
+            cout << "Send question: ";
+        }
         string input;
         getline(cin, input);
         char msg[2048];
@@ -96,14 +143,45 @@ public:
         if (write(peerSd, msg, sizeof(msg)) < 0) {
             std::cerr << "Sending message unsuccessful" << std::endl;
         }
+    
+        if (input == "Y" || !host && input == answer) {
+            cout << "\n--== Answer found! ==--\n" << endl;
+            return true;
+        }
+        return false;
     }
 
     // Recieve messages in game
-    void recvMessage() {
+    bool recvMessage() {
+        if (host) {
+            questions++;
+            cout << "Waiting for question..." << endl;
+        }
+        else {
+            cout << "Waiting for response..." << endl;
+        }
         char msg[2048];
         if (read(peerSd, msg, sizeof(msg)) < 0) {
             std::cerr << "Receiving message unsuccessful" << std::endl;
         }
+
         cout << msg << endl;
+        if (host && string(msg) == answer || !host && string(msg) == "Y") {
+            cout << "\n--== Answer found! ==--\n";
+            return true;
+        }
+        return false;
+    }
+
+    bool isHost() {
+        return host;
+    }
+
+    int getNumQuestions() {
+        return questions;
+    }
+
+    string getAnswer() {
+        return answer;
     }
 };
