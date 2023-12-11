@@ -103,34 +103,34 @@ csslab13 is used as the main server, same machine is used to run both clients.
 There are 2 sh scripts. 1 is for client, 1 is for server. Be sure to seperate server script along with server.cpp to a different directory so that main() functions do not interfere.
 
 ### Criteria ###
-1)  Register
+1)  __Register__
 
 You can regsiter with a username to the server. Server keeps track of the user and logs using the information given.
 
-2)  List Games
+2)  __List Games__
 
 A list of games is sent from the server to the client upon registration
 
-3)  Create Game
+3)  __Create Game__
 
 Users can create games after registration by typing a string name
 
-4)  Join Game
+4)  __Join Game__
 
 Users can join games after registration by typing the target server name
 
-5)  Exit Game / Unregister
+5)  __Exit Game / Unregister__
 
 Exiting a game is performed by inputting Q at lobby menu
 
-6)  Application Specific protocol
+6)  __Application Specific protocol__
 
 Certain strings that are sent are recognized by the protocol. For example, L is lobby refresh and Q is exiting the game / unregistering.
 Other inputs are meant for other functions like creating/joining a lobby.
 
 
-Bonus Features (5 points each)
+# Bonus Features #
 
-7)  Implement chat.  This would enable users to chat with each other before games and in games.
+7)  __Implement chat.  This would enable users to chat with each other before games and in games.__
 
 Chat is implemented as 20 Qs would not be possible without some sort of communication :)
