@@ -2,7 +2,7 @@
 A text-based game based from 20 Questions implemented with networking concepts learned in class.
 
 ## How to play / Networking protocol ##
-Documentation of protocol and game
+Documentation of protocol and game. The following is in chronological order.
 
 ### Registration ###
 Send __maximum__ of 16 ASCII bytes for your name.
@@ -45,7 +45,7 @@ Create a lobby by entering a name / Enter lobby name to join / L (Refresh lobbie
 ```
 
 ### During a Game ###
-## Host ##
+### Host ###
 Start of game
 ```
 Enter subject/idea for an answer:
@@ -61,7 +61,7 @@ Send response to other player (Y = they got it!):
 > Y
 ```
 
-## Other player ##
+### Other player ###
 Start of game
 ```
 Host is choosing answer...
