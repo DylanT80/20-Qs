@@ -113,11 +113,11 @@ A list of games is sent from the server to the client upon registration
 
 3)  __Create Game__
 
-Users can create games after registration by typing a string name
+Users can create games after registration by inputting a string name
 
 4)  __Join Game__
 
-Users can join games after registration by typing the target server name
+Users can join games after registration by inputting the target server name
 
 5)  __Exit Game / Unregister__
 
