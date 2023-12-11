@@ -5,7 +5,7 @@ A text-based game based from 20 Questions implemented with networking concepts l
 Initial template of protocol and visuals
 
 ### Registration ###
-Send __maximum__ of 8 ASCII bytes for your name.
+Send __maximum__ of 16 ASCII bytes for your name.
 ```
 Please enter an unique username:
 > UniqueID
@@ -14,58 +14,53 @@ Please enter an unique username:
 A list of lobbies will appear once registered.
 ```
 Available Lobbies:
-[1] JOIN NOW - UniqueID
-[2] feeling lonely - OtherID's game
-[3] ...
+JOIN NOW
+feeling lonely
+...
 
-Create a lobby by entering a name / Enter lobby number to join / Q (quit):
+Create a lobby by entering a name / Enter lobby name to join / Q (quit):
 > 
 ```
 ### Create a Lobby ###
 Create a lobby by entering a string name.
 ```
 Available Lobbies:
-[1] JOIN NOW - UniqueID
-[2] feeling lonely - OtherID's game
-[3] ...
+JOIN NOW
+feeling lonely
+...
 
-Create a lobby by entering a name / Enter lobby number to join / Q (quit):
+Create a lobby by entering a name / Enter lobby name to join / Q (quit):
 > 1v1 me
 ```
 ### Join a Game ###
-Join a lobby by inputting the index of it.
+Join a lobby by inputting the name of it.
 ```
 Available Lobbies:
-[1] JOIN NOW - UniqueID
-[2] feeling lonely - OtherID's game
-[3] ...
+JOIN NOW
+feeling lonely
+...
 
-Create a lobby by entering a name / Enter lobby number to join / Q (quit):
+Create a lobby by entering a name / Enter lobby name to join / Q (quit):
 > JOIN NOW
 ```
-### Exit a Game ###
+### During a Game ###
 ```
 Is it pink?
 
-Y/N or E (exit):
-> E
+Send response to other player (Y = they got it!):
+> Y
 ```
 ### Unregister ###
-Join a lobby by inputting the index of it.
+Unregister by pressing Q at the lobby menu
 ```
 Available Lobbies:
-[1] JOIN NOW - UniqueID
-[2] feeling lonely - OtherID's game
-[3] ...
+JOIN NOW
+feeling lonely
+...
 
 Create a lobby by entering a name / Enter lobby number to join / Q (quit):
 > Q
 ```
 
-## TODO's ##
-
-| File(s)   |      What      |
-|----------|:-------------:
-| game.cpp, gameServer.cpp |  bug - sendMessage() called twice | 
-| game.cpp, gameServer.cpp |  complete game logic | 
-| server.cpp, gameServer.cpp, client.cpp |    unregsister(), handle user infos   |
+### A couple notes ###
+Used 127.0.0.1 for local play only. Remote play doesn't seem to be working, and therefore the commented out code in the game.cpp is present. Instead it breaks ending the whole process.
