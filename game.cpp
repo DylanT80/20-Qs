@@ -84,7 +84,7 @@ int main() {
 
         // In the game
         else if (gs == inGame) {
-            if (gameServer->getNumQuestions() == 1) {
+            if (gameServer->getNumQuestions() == 20) {
                 cout << "\n--== 20 Questions asked! ==--\n";
                 gs = gameDone;
             }
