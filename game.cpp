@@ -102,10 +102,11 @@ int main() {
 
         else if (gs == gameDone) {
             cout << "The answer was...: " << gameServer->getAnswer() << "!\n\n\n";
-            cout << "game done :)\nReturning to menu...\n";
+            cout << "game done :)\nDisconnecting...\n";
             delete gameServer;
-            cl.reconnect();
-            gs = inLobby;
+            // cl.reconnect();
+            // gs = inLobby;
+            break;
         }
     }
 }
