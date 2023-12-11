@@ -39,8 +39,6 @@ public:
 
     ~Client() {
         delete[] p2pIP;
-        delete[] hostName;
-        delete host;
     }
 
     // Connect to server

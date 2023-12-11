@@ -89,10 +89,9 @@ public:
         cout << "Joining Lobby..." << endl;
 
         bzero(&peerSockAddr, sizeof(peerSockAddr));
-        cout << p2pIp << endl;
 
         peerSockAddr.sin_family = AF_INET;  
-        peerSockAddr.sin_addr.s_addr = inet_addr(inet_ntoa(*(struct in_addr*)* gethostbyname(p2pIp)->h_addr_list));
+        peerSockAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
         peerSockAddr.sin_port = htons(server_port);
 
         peerSd = socket(AF_INET, SOCK_STREAM, 0);
