@@ -123,8 +123,6 @@ Users can join games after registration by typing the target server name
 
 Exiting a game is performed by inputting Q at lobby menu
 
-Exiting a game is performed by inputting Q at lobby menu
-
 6)  Application Specific protocol
 
 Certain strings that are sent are recognized by the protocol. For example, L is lobby refresh and Q is exiting the game / unregistering.
