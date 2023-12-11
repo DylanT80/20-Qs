@@ -45,7 +45,7 @@ Create a lobby by entering a name / Enter lobby name to join / L (Refresh lobbie
 ```
 
 ### During a Game ###
-### Host ###
+__Host__
 Start of game
 ```
 Enter subject/idea for an answer:
@@ -61,7 +61,7 @@ Send response to other player (Y = they got it!):
 > Y
 ```
 
-### Other player ###
+__Other player__
 Start of game
 ```
 Host is choosing answer...
@@ -76,7 +76,7 @@ Send question:
 > Is it yellow?
 ```
 
-### End of game ## #
+__End of game__
 ```
 The answer was pink!
 game done
