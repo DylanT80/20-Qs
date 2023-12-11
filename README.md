@@ -99,7 +99,7 @@ Create a lobby by entering a name / Enter lobby name to join / L (Refresh lobbie
 Used 127.0.0.1 for local play only. Remote play doesn't seem to be working, and therefore the commented out code in the game.cpp is present. Instead it breaks ending the whole process.
 
 ### Instructions to run ###
-csslab13 is used as the main server, same machine is used to run both clients.
+csslab13 is used as the main server, same machine is used to run both clients.\n
 There are 2 sh scripts. 1 is for client, 1 is for server. Be sure to seperate server script along with server.cpp to a different directory so that main() functions do not interfere.
 
 ### Criteria ###
